@@ -11,6 +11,36 @@ import (
 	tail "github.com/katutoshi/go-training/tail"
 )
 
+func TestRun(t *testing.T) {
+	given := `11111
+22222
+33333
+44444
+55555
+66666
+77777
+88888
+99999
+00000`
+	want := `99999
+00000
+`
+
+	args := []string{"main_test.go", "-n", "2"}
+	buf := &bytes.Buffer{}
+	ret := tail.Run(args, strings.NewReader(given), buf, buf)
+	if ret != tail.ExitCodeOK {
+		t.Fatal("エラー出てる")
+	}
+
+	got := buf.String()
+	t.Log(got)
+	t.Log(want)
+	if got != want {
+		t.Fatal("一致しない")
+	}
+}
+
 func TestTail(t *testing.T) {
 	given := `11111
 22222
