@@ -23,7 +23,7 @@ func TestTail(t *testing.T) {
 00000`
 	want := []string{"99999", "00000"}
 
-	got, err := tailD(strings.NewReader(given), 2)
+	got, err := tail(strings.NewReader(given), 2)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -59,10 +59,7 @@ func BenchmarkTail(b *testing.B) {
 		name     string
 		tailFunc func(io.Reader, int) ([]string, error)
 	}{
-		{"Scanner", tail},
-		{"ReadLine+Shift", tailB},
-		{"ReadLine+Shift都度", tailC},
-		{"ReadLine+Shift明示的", tailD},
+		{"tail", tail},
 	}
 
 	for _, bm := range benchmarks {
