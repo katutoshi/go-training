@@ -25,13 +25,13 @@ func realMain() int {
 		return ExitCodeOK
 	}
 
-	output, err := tail(os.Stdin, Default)
+	output, err := Tail(os.Stdin, Default)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return ExitCodeError
 	}
 
-	if err := print(os.Stdout, output); err != nil {
+	if err := Print(os.Stdout, output); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return ExitCodeError
 	}
@@ -39,7 +39,7 @@ func realMain() int {
 	return ExitCodeOK
 }
 
-func tail(r io.Reader, n int) ([]string, error) {
+func Tail(r io.Reader, n int) ([]string, error) {
 	// tailする行数の何倍かをbufferとして持つ。倍率はテキトー
 	bs := n * 10
 	buf := make([]string, 0, bs)
@@ -79,7 +79,7 @@ func tail(r io.Reader, n int) ([]string, error) {
 	return buf[offset:], nil
 }
 
-func print(w io.Writer, text []string) error {
+func Print(w io.Writer, text []string) error {
 	for _, s := range text {
 		if _, err := fmt.Fprintf(w, "%s\n", s); err != nil {
 			return err

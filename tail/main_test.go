@@ -1,4 +1,4 @@
-package main
+package main_test
 
 import (
 	"bytes"
@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	tail "github.com/katutoshi/go-training/tail"
 )
 
 func TestTail(t *testing.T) {
@@ -23,7 +24,7 @@ func TestTail(t *testing.T) {
 00000`
 	want := []string{"99999", "00000"}
 
-	got, err := tail(strings.NewReader(given), 2)
+	got, err := tail.Tail(strings.NewReader(given), 2)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -41,7 +42,7 @@ B
 C
 `
 	buf := &bytes.Buffer{}
-	if err := print(buf, given); err != nil {
+	if err := tail.Print(buf, given); err != nil {
 		t.Fatal(err)
 	}
 
@@ -59,7 +60,7 @@ func BenchmarkTail(b *testing.B) {
 		name     string
 		tailFunc func(io.Reader, int) ([]string, error)
 	}{
-		{"tail", tail},
+		{"tail", tail.Tail},
 	}
 
 	for _, bm := range benchmarks {
